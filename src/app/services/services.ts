@@ -41,9 +41,20 @@ export class Services {readonly services = signal([
     }
   ]);
 
+  // commander(serviceTitle: string) {
+  //   console.log(`Commande pour : ${serviceTitle}`);
+  //   // Logique de redirection ou d'ouverture de formulaire
+  // }
+
   commander(serviceTitle: string) {
-    console.log(`Commande pour : ${serviceTitle}`);
-    // Logique de redirection ou d'ouverture de formulaire
+    const phoneNumber = '243998514781'; // Votre numéro sans + ni espaces
+    const message = `Bonjour iBuzz, je souhaite commander le service : ${serviceTitle}`;
+    
+    // On encode le message pour que les espaces et caractères spéciaux passent dans l'URL
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    
+    // Ouvre WhatsApp dans un nouvel onglet
+    window.open(url, '_blank');
   }
 
 }
