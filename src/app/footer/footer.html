@@ -1,0 +1,101 @@
+<footer appScrollReveal class="bg-slate-900 text-white pt-12 pb-6 px-6 w-full overflow-hidden">
+  <div class="max-w-[1400px] mx-auto">
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-14 mb-16">
+      
+      <div class="space-y-6">
+        <div class="flex items-center gap-3">
+          <div class="w-1.5 h-9 bg-orange-500 rounded-sm"></div>
+          <h2 class="text-3xl font-black tracking-tighter italic">{{ brandName() }}</h2>
+        </div>
+        <p class="text-gray-400 text-sm leading-relaxed max-w-xs">
+          <span class="text-white font-bold">iBuzz</span> : L’alliance parfaite entre une <span class="text-white font-bold">technologie événementielle</span> de pointe et l’expertise d’une équipe dédiée.
+        </p>
+      </div>
+
+      <div class="lg:pl-6">
+        <h3 class="text-xl font-bold uppercase tracking-widest mb-3">Liens Rapides</h3>
+        <div class="h-[1px] w-full bg-gray-800 relative mb-8">
+          <div class="absolute left-0 top-0 h-full w-16 bg-orange-500"></div>
+        </div>
+        <ul class="space-y-4">
+          @for (link of footerLinks(); track link.label) {
+            <li>
+              <a
+                  [routerLink]="['/']" 
+                  [fragment]="link.fragment"  
+                  class="text-gray-400 hover:text-orange-500 transition-colors flex items-center gap-3 text-sm group">
+                <span class="text-xs text-gray-500 group-hover:text-orange-500">></span> {{ link.label }}
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-bold uppercase tracking-widest mb-3">Contact</h3>
+        <div class="h-[1px] w-full bg-gray-800 relative mb-8">
+          <div class="absolute left-0 top-0 h-full w-16 bg-orange-500"></div>
+        </div>
+        <div class="space-y-3 text-sm text-gray-400">
+          @for (line of contactInfo().address; track line) {
+            <p>{{ line }}</p>
+          }
+          <p class="pt-2"><span class="text-white font-bold">Phone:</span> {{ contactInfo().phones }}</p>
+          <p><span class="text-white font-bold">Email:</span> 
+            <a [href]="'mailto:' + contactInfo().email" class="hover:text-orange-500 underline-offset-4">{{ contactInfo().email }}</a>
+          </p>
+        </div>
+        
+        <div class="flex gap-3 mt-8">
+            @for (social of socialIcons(); track social.name) {
+            <a [href]="social.url" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-orange-500 transition-all border border-gray-700 hover:-translate-y-1">
+                <i [class]="social.icon" class="text-sm"></i>
+            </a>
+            }
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-bold uppercase tracking-widest mb-3">Newsletter</h3>
+        <div class="h-[1px] w-full bg-gray-800 relative mb-8">
+          <div class="absolute left-0 top-0 h-full w-16 bg-orange-500"></div>
+        </div>
+        <p class="text-sm text-gray-400 mb-6">Souscrire à notre newsletter pour rester branché.</p>
+        
+        <form class="flex h-12 w-full max-w-sm">
+          <input type="email" placeholder="Votre email" 
+                 class="flex-1 min-w-0 bg-white px-4 text-black outline-none rounded-l-md text-sm">
+          <button type="submit" 
+                  class="bg-orange-500 px-4 font-bold hover:bg-orange-600 transition-colors rounded-r-md uppercase text-[10px] tracking-tighter">
+            Souscrire
+          </button>
+        </form>
+      </div>
+
+    </div>
+
+    <div class="border-t border-gray-800/50 pt-8 text-center text-sm space-y-1">
+      <p class="text-gray-400">
+        © Copyright {{ currentYear() }} <span class="text-white font-medium">{{ brandName() }}</span>. All Rights Reserved
+      </p>
+      <p class="text-gray-600 text-[10px] uppercase tracking-widest">
+        Designed by <span class="text-orange-500">itcorp</span>
+      </p>
+    </div>
+
+  </div>
+
+<button (click)="scrollToTop($event)"
+          [class.opacity-100]="showScrollButton()"
+          [class.translate-y-0]="showScrollButton()"
+          [class.opacity-0]="!showScrollButton()"
+          [class.translate-y-12]="!showScrollButton()"
+          [class.pointer-events-none]="!showScrollButton()"
+          class="fixed bottom-8 right-8 w-10 h-10 bg-orange-500 text-white rounded-full flex items-center justify-center  hover:bg-orange-600 hover:-translate-y-2 active:scale-95 transition-all duration-500 cursor-pointer group z-50 overflow-hidden">
+    
+    <div class="focus:outline-none absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity focus:outline-none focus:ring-0 active:scale-95"></div>
+    
+    <i class="pi pi-chevron-up text-xl group-hover:scale-125 transition-transform duration-300 ease-out"></i>
+  </button>
+</footer>

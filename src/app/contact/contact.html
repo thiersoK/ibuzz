@@ -1,0 +1,84 @@
+<section class="py-20 bg-white">
+  <div class="max-w-6xl mx-auto px-6">
+    
+    <div appScrollReveal class="text-center mb-16">
+      <h2 class="text-3xl font-black tracking-widest uppercase text-slate-900 mb-4">Nous Contacter</h2>
+      <div class="relative w-24 h-[1px] bg-gray-200 mx-auto">
+        <div class="absolute left-1/2 -translate-x-1/2 -top-[1.5px] h-[4px] w-10 bg-orange-500 rounded-full"></div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 mb-20 border-b border-gray-50 pb-10">
+      
+      <div
+          appScrollReveal
+          [style.transition-delay]="'0ms'" 
+          class="flex flex-col items-center text-center p-8 group">
+        <div class="w-14 h-14 rounded-full border border-gray-100 flex items-center justify-center mb-6 shadow-xs group-hover:scale-110 transition-transform duration-300">
+          <i class="pi pi-map-marker text-orange-500 text-2xl"></i>
+        </div>
+        <h3 class="text-gray-400 font-bold uppercase tracking-widest text-xs mb-4">Adresse</h3>
+        <div class="text-slate-800 text-sm leading-relaxed font-medium italic">
+          @for (line of contactInfo().address; track line) {
+            <p>{{ line }}</p>
+          }
+        </div>
+      </div>
+
+      <div
+          appScrollReveal
+          [style.transition-delay]="'200ms'" 
+          class="flex flex-col items-center text-center p-8 border-y md:border-y-0 md:border-x border-gray-100 group">
+        <div class="w-14 h-14 rounded-full border border-gray-100 flex items-center justify-center mb-6 shadow-xs group-hover:scale-110 transition-transform duration-300">
+          <i class="pi pi-phone text-orange-500 text-2xl"></i>
+        </div>
+        <h3 class="text-gray-400 font-bold uppercase tracking-widest text-xs mb-4">Téléphone</h3>
+        <p class="text-slate-800 text-sm leading-relaxed font-medium italic">
+          {{ contactInfo().phones }}
+        </p>
+      </div>
+
+      <div
+          appScrollReveal 
+          [style.transition-delay]="'400ms'" 
+          class="flex flex-col items-center text-center p-8 group">
+        <div class="w-14 h-14 rounded-full border border-gray-100 flex items-center justify-center mb-6 shadow-xs group-hover:scale-110 transition-transform duration-300">
+          <i class="pi pi-envelope text-orange-500 text-2xl"></i>
+        </div>
+        <h3 class="text-gray-400 font-bold uppercase tracking-widest text-xs mb-4">Email</h3>
+        <a [href]="'mailto:' + contactInfo().email" 
+           class="text-slate-800 text-sm font-medium italic hover:text-orange-500 transition-colors">
+          {{ contactInfo().email }}
+        </a>
+      </div>
+
+    </div>
+
+    <form
+        appScrollReveal 
+        [style.transition-delay]="'500ms'"    
+        #f="ngForm" (ngSubmit)="onSubmit(f)" class="max-w-4xl mx-auto space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input type="text" name="nom" ngModel placeholder="Votre Nom" required
+               class="w-full p-4 border border-gray-200 rounded-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none text-sm transition-all">
+        
+        <input type="email" name="email" ngModel placeholder="Votre Email" required
+               class="w-full p-4 border border-gray-200 rounded-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none text-sm transition-all">
+      </div>
+
+      <input type="text" name="sujet" ngModel placeholder="Sujet" required
+             class="w-full p-4 border border-gray-200 rounded-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none text-sm transition-all">
+
+      <textarea name="message" ngModel placeholder="Message" rows="6" required
+                class="w-full p-4 border border-gray-200 rounded-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none text-sm transition-all resize-none"></textarea>
+
+      <div class="flex justify-center pt-6">
+        <button type="submit" 
+                class="bg-orange-500 text-white px-12 py-4 rounded-sm font-bold text-xs uppercase tracking-[0.2em] hover:bg-slate-900 transition-all shadow-lg active:scale-95 cursor-pointer">
+          Envoyer votre message
+        </button>
+      </div>
+    </form>
+
+  </div>
+</section>
