@@ -33,9 +33,9 @@ export class Services {readonly services = signal([
       description: 'La gestion complète de votre événement :',
       details: [
         'INVITATION ELECTRONIQUE inclus',
-        'iBUZZ Check-in QR inclus',
-        'iBUZZ Accueil Premium inclus',
-        'iBUZZ Bar Futuriste inclus'
+        'iBUZZ CHECK-IN QR inclus',
+        'iBUZZ ACCUEIL PREMIUM inclus',
+        'iBUZZ BAR FUTURISTE inclus'
       ],
       icon: 'pi pi-qrcode'
     }
