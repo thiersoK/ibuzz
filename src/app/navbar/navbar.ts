@@ -75,8 +75,92 @@
 
 /** architecture "Single Page Application" (SPA)" */
 //====================================================
+// import { CommonModule, isPlatformBrowser } from '@angular/common';
+// import { Component, inject, signal, OnInit, OnDestroy, PLATFORM_ID } from '@angular/core';
+
+// interface NavItem {
+//   label: string;
+//   route: string;
+//   icon?: string;
+// }
+
+// @Component({
+//   selector: 'app-navbar',
+//   standalone: true,
+//   imports: [CommonModule],
+//   templateUrl: './navbar.html',
+//   styleUrl: './navbar.css',
+// })
+// export class Navbar implements OnInit, OnDestroy {
+//   private platformId = inject(PLATFORM_ID);
+//   private observer: IntersectionObserver | null = null;
+
+//   // Initialisation sur 'hero' pour que l'Accueil soit allumé au départ
+//   activeSection = signal<string>('hero');
+//   isMenuOpen = signal(false);
+
+//   navigationItems = signal<NavItem[]>([
+//     { label: 'Accueil', route: 'hero', icon: 'pi-home' },
+//     { label: 'À Propos', route: 'about', icon: 'pi-info-circle' },
+//     { label: 'Services', route: 'services', icon: 'pi-cog' },
+//     { label: 'Galerie', route: 'galerie', icon: 'pi-images' },
+//     { label: 'Témoignages', route: 'testimonials', icon: 'pi-comments' },
+//     { label: 'Contact', route: 'contact', icon: 'pi-envelope' }
+//   ]);
+
+//   ngOnInit() {
+//     if (isPlatformBrowser(this.platformId)) {
+//       this.initScrollObserver();
+//     }
+//   }
+
+//   ngOnDestroy() {
+//     if (this.observer) this.observer.disconnect();
+//   }
+
+//   // Méthode pour scroller manuellement lors d'un clic sur le menu
+//   scrollToSection(sectionId: string) {
+//     const element = document.getElementById(sectionId);
+//     if (element) {
+//       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+//       this.activeSection.set(sectionId);
+//       this.isMenuOpen.set(false); // Ferme le menu mobile après clic
+//     }
+//   }
+
+//   private initScrollObserver() {
+//     const options = {
+//       root: null,
+//       rootMargin: '-20% 0px -70% 0px', // Zone de détection en haut de l'écran
+//       threshold: 0
+//     };
+
+//     this.observer = new IntersectionObserver((entries) => {
+//       entries.forEach((entry) => {
+//         // On ne change le signal que si la section entre vraiment dans la zone
+//         if (entry.isIntersecting && entry.target.id) {
+//           this.activeSection.set(entry.target.id);
+//         }
+//       });
+//     }, options);
+
+//     // On attend un petit délai pour être sûr que le DOM est rendu
+//     setTimeout(() => {
+//       this.navigationItems().forEach((item) => {
+//         const element = document.getElementById(item.route);
+//         if (element) this.observer?.observe(element);
+//       });
+//     }, 500);
+//   }
+
+//   toggleMenu() {
+//     this.isMenuOpen.update((v) => !v);
+//   }
+// }
+
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, inject, signal, OnInit, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { NavigationService } from '../navigation.service'; // Vérifie bien le chemin
 
 interface NavItem {
   label: string;
@@ -93,10 +177,11 @@ interface NavItem {
 })
 export class Navbar implements OnInit, OnDestroy {
   private platformId = inject(PLATFORM_ID);
+  private navService = inject(NavigationService);
   private observer: IntersectionObserver | null = null;
 
-  // Initialisation sur 'hero' pour que l'Accueil soit allumé au départ
-  activeSection = signal<string>('hero');
+  // On utilise uniquement les signaux du service pour la synchronisation globale
+  activeSection = this.navService.activeSection; 
   isMenuOpen = signal(false);
 
   navigationItems = signal<NavItem[]>([
@@ -118,42 +203,38 @@ export class Navbar implements OnInit, OnDestroy {
     if (this.observer) this.observer.disconnect();
   }
 
-  // Méthode pour scroller manuellement lors d'un clic sur le menu
-  scrollToSection(sectionId: string) {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      this.activeSection.set(sectionId);
-      this.isMenuOpen.set(false); // Ferme le menu mobile après clic
-    }
+  // Appelle la méthode du service pour scroller
+  scrollToSection(id: string) {
+    this.navService.scrollToSection(id);
+    this.isMenuOpen.set(false); // Ferme le menu mobile
+  }
+
+  toggleMenu() {
+    this.isMenuOpen.update((v) => !v);
   }
 
   private initScrollObserver() {
     const options = {
       root: null,
-      rootMargin: '-20% 0px -70% 0px', // Zone de détection en haut de l'écran
+      rootMargin: '-20% 0px -70% 0px',
       threshold: 0
     };
 
     this.observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        // On ne change le signal que si la section entre vraiment dans la zone
         if (entry.isIntersecting && entry.target.id) {
-          this.activeSection.set(entry.target.id);
+          // Mise à jour du signal dans le service
+          this.navService.activeSection.set(entry.target.id);
         }
       });
     }, options);
 
-    // On attend un petit délai pour être sûr que le DOM est rendu
+    // Petit délai pour laisser le temps au DOM de charger les IDs
     setTimeout(() => {
       this.navigationItems().forEach((item) => {
         const element = document.getElementById(item.route);
         if (element) this.observer?.observe(element);
       });
     }, 500);
-  }
-
-  toggleMenu() {
-    this.isMenuOpen.update((v) => !v);
   }
 }

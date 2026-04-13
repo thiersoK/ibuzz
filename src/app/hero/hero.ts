@@ -1,4 +1,5 @@
-import { Component, computed, effect, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
+import { NavigationService } from '../navigation.service';
 
 interface Slide {
   url: string;
@@ -76,11 +77,20 @@ export class Hero {
     this.currentIndex.set(index);
   }
 
-    // Auto-play optionnel avec effet de nettoyage
+  // Auto-play optionnel avec effet de nettoyage
   constructor() {
     effect((onCleanup) => {
       const interval = setInterval(() => this.next(), 6000);
       onCleanup(() => clearInterval(interval));
     });
+  }
+
+  // 1. Injecter le service de navigation
+  private navService = inject(NavigationService);
+
+  //La méthode appelée par le bouton (click)="onStart()"
+  onStart() {
+    // Cette méthode utilise le service pour scroller vers la section "about" que le bouton utilise
+    this.navService.scrollToSection('about');
   }
 }
